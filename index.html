@@ -1,0 +1,442 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Visa Calculator</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <style>
+                p{
+                    margin: 0;
+                }
+                .main-container{
+                    width: 100%;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    margin: 0 auto;
+                    max-width: 1130px;
+                    font-family: sans-serif;
+                }
+                .d-flex{
+                    display: flex;
+                    margin-left: -15px;
+                    margin-right: -15px;
+                }
+                .d-col-6{
+                    width: 50%;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+                .d-col{
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .main-title{
+                    font-size: 22px;
+                    font-weight: bold;
+                    color: #3c3c3c;
+                    margin: 0 0 24px 0;
+                }
+
+                .subtitle{
+                    font-size: 18px;
+                    color: #9d9d9d;
+                    display: block;
+                    margin-bottom: 22px;
+                }
+                .blackish{
+                    color: #4f4f4f;
+                }
+
+                .paragraph{
+                    color: #9d9d9d;
+                    line-height: 1.3;
+                }
+                .divider{
+                    margin: 25px 0;
+                    border-top: 1px solid #f2f2f2;
+                }
+                .width-100{
+                    width: 100%;
+                }
+
+                .visa-box{
+                    padding: 30px;
+                }
+                .visa-tab{
+                    display: flex;
+                    padding-bottom: 30px;
+                }
+                .visa-tab div{
+                    font-size: 14px;
+                    color: #9d9d9d;
+                    border: 2px solid #e2e2e2;
+                    display: block;
+                    float: left;
+                    min-width: 106px;
+                    line-height: 28px;
+                    text-align: center;
+                    cursor: pointer;
+                }
+                .visa-tab div:first-child{
+                    border-bottom-left-radius: 5px;
+                    border-top-left-radius: 5px;
+                    border-right: 0;
+                }
+                .visa-tab div:last-child{
+                    border-bottom-right-radius: 5px;
+                    border-top-right-radius: 5px;
+                    border-left: 0;
+                }
+                .visa-tab div:first-child.active{
+                    border: 2px solid #81be1f;
+                    color: #81be1f;
+                }
+                .visa-tab div:last-child.active{
+                    border: 2px solid #81be1f;
+                    color: #81be1f;
+                }
+
+                .visa-table:last-child{
+                    display: none;
+                }
+
+                table{
+                    width: 100%;
+                }
+
+                table thead span{
+                    display: block;
+                    font-size: 15px;
+                    color: #3c3c3c;
+                    margin-bottom: 20px;
+                    text-align: left;
+                }
+                .input-wrapper{
+                    position: relative;
+                }
+                .input-wrapper.has-img{
+                    padding-right: 20px;
+                }
+                .input-wrapper.has-img label{
+                    position: absolute;
+                    top: 13px;
+                    left: 10px;
+                    cursor: pointer;
+                }
+                .default-input{
+                    border-radius: 5px;
+                    height: 48px;
+                    width: 100%;
+                    border: 1px solid #e2e2e2;
+                    outline: none;
+                    padding-left: 20px;
+                    font-size: 16px;
+                    color: #9d9d9d;
+                }
+                .input-wrapper.has-img input{
+                    padding-left: 40px;
+                }
+                .absolute-input{
+                    width: 98px;
+                }
+                input:focus{
+                    border-color: #8AC34A;
+                }
+                .remove-button{
+                    display: block;
+                    text-align: center;
+                    width: 40px;
+                    color: #ff0000;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
+
+                .addMore{
+                    font-size: 16px;
+                    color: #81be1f;
+                    border-bottom: 1px dashed #81be1f;
+                    padding-top: 10px;
+                    margin-left: 22px;
+                    margin-bottom: 30px;
+                    display: inline-block;
+                    position: relative;
+                    cursor: pointer;
+                }
+                .addMore::before{
+                    display: block;
+                    text-decoration: none;
+                    content: "+";
+                    position: absolute;
+                    left: -17px;
+                    font-size: 28px;
+                    line-height: 17px;
+                }
+                .button{
+                    border-radius: 5px;
+                    border: 2px solid #81be1f;
+                    font-size: 16px;
+                    color: #81be1f;
+                    background-color: #fff;
+                    font-family: inherit;
+                    display: inline-block;
+                    margin-right: 8px;
+                    line-height: 46px;
+                    padding: 0 23px;
+                    cursor: pointer;
+                    outline: none;
+                }
+                .submit-button{
+                    background-color: #81be1f;
+                    color: #ffffff;
+                }
+
+            </style>
+
+            <div class="main-div">
+                <div class="container main-container">
+                    <div class="visa-box">
+                        <h1 class="main-title">Визовый калькулятор</h1>
+                        <div class="first-group d-flex">
+                            <div class="d-col-6">
+                                <div class="subtitle">Выберите плановую или последнюю дату въезда в страну ЕС</div>
+                                <div class="input-wrapper has-img">
+                                    <label for="today">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"
+                                             alt="datepicker image">
+                                    </label>
+                                    <input class="default-input" type="text" id="today">
+                                </div>
+                            </div>
+                            <div class="d-col-6">
+                                <div class="subtitle blackish">Дата въезда в страны безвизовые с ЕС</div>
+                                <p class="paragraph">Плановая или последняя дата въезда, если в данный момент вы находитесь в ЕС, в формате дд/мм/гг.</p>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <form>
+                            <div class="second-group d-flex">
+                                <div class="d-col-6">
+                                    <div class="subtitle">Введите даты предыдущих поездок с загранпаспорта</div>
+                                    <div class="visa-tab">
+                                        <div class="active" data-id="1">По поездкам</div>
+                                        <div data-id="2">Произвольно</div>
+                                    </div>
+                                    <div class="visa-content">
+                                        <div class="visa-table visa-table1" data-id="1">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th><span>Дата въезда</span></th>
+                                                    <th><span>Дата въезда</span></th>
+                                                    <th><span>Кол-во дней</span></th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                            <div data-type="add1" class="addMore add1">Добавить поездку</div>
+                                        </div>
+                                        <div class="visa-table visa-table2" data-id="2">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th><span>Все даты</span></th>
+                                                    <th><span>Направление</span></th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                            <div data-type="add2" class="addMore add2">Добавить поездку</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="button submit-button" type="button">Рассчитать</button>
+                                        <button class="button" type="reset">Очистить</button>
+                                    </div>
+                                </div>
+                                <div class="passport-group d-col-6">
+                                    <div class="subtitle blackish">Даты с загранпаспортов</div>
+                                    <p class="paragraph">Введите даты въезда и выезда с безвизовых стран ЕС попарно. Не нужно вносить даты поездок, прошедшие по длинным (более 90 дней) национальными визами (например, рабочая или студенческая). Значения в столбце Разница появится автоматически при подсчете и будет показывать количество дней проведенных в безвизовых странах ЕС в данной поездке.</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+            <script type="text/javascript">
+
+                    $(document).ready(function () {
+
+                        $("#today").datepicker().datepicker("setDate", new Date());
+
+                        $('.visa-table .submit-button').on('click', function(){
+                            const way = $(this).attr('data-way');
+
+                            if(way){
+
+                            }else{
+
+                            }
+                        });
+
+
+                        $('.visa-tab div').on('click', function(){
+                            $('.visa-tab div').removeClass('active');
+                            $(this).addClass('active');
+
+                            $('.visa-content .visa-table').fadeOut(0);
+                            $('.visa-content .visa-table[data-id='+ $(this).attr('data-id') +']').fadeIn(0);
+                        });
+
+                        var i = 1;
+
+                        addRow();
+                        addPicker();
+                        checkElement();
+
+                        $('.add1, .add2').on('click', function(){
+
+                            const current_type = $(this).attr('data-type');
+
+                            i++;
+                            addRow(current_type);
+                            addPicker(current_type);
+                            checkElement();
+
+                        });
+
+
+                        function addRow(type) {
+
+                            const counter = i;
+
+                            const newRow1 = '<tr class="row'+counter+'">\n' +
+                                '                                                    <td>\n' +
+                                '                                                        <div class="input-wrapper has-img">\n' +
+                                '                                                            <label for="from'+counter+'">\n' +
+                                '                                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"\n' +
+                                '                                                                     alt="datepicker image">\n' +
+                                '                                                            </label>\n' +
+                                '                                                            <input class="default-input" id="from'+counter+'" type="text" readonly>\n' +
+                                '                                                        </div>\n' +
+                                '                                                    </td>\n' +
+                                '                                                    <td>\n' +
+                                '                                                        <div class="input-wrapper has-img">\n' +
+                                '                                                            <label for="to'+counter+'">\n' +
+                                '                                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"\n' +
+                                '                                                                     alt="datepicker image">\n' +
+                                '                                                            </label>\n' +
+                                '                                                            <input class="default-input" id="to'+counter+'" type="text" readonly>\n' +
+                                '                                                        </div>\n' +
+                                '                                                    </td>\n' +
+                                '                                                    <td>\n' +
+                                '                                                        <div class="input-wrapper">\n' +
+                                '                                                            <input id="result'+ counter +'" class="default-input absolute-input" type="text" readonly>\n' +
+                                '                                                        </div>\n' +
+                                '                                                    </td>\n' +
+                                '                                                    <td><span data-id="' + counter + '" class="remove-button remove'+ counter +'">&times;</span></td>\n' +
+                                '                                                </tr>';
+
+                            const newRow2 = '<tr class="row'+ counter +'">\n' +
+                                '                                                        <td>\n' +
+                                '                                                            <div class="input-wrapper has-img">\n' +
+                                '                                                                <label for="picker'+ counter +'">\n' +
+                                '                                                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"\n' +
+                                '                                                                         alt="datepicker image">\n' +
+                                '                                                                </label>\n' +
+                                '                                                                <input class="default-input" id="picker'+ counter +'" type="text">\n' +
+                                '                                                            </div>\n' +
+                                '                                                        </td>\n' +
+                                '                                                        <td><button data-way="1" type="button" class="button submit-button">← въезд</button></td>\n' +
+                                '                                                    </tr>';
+
+                            if( counter == 1){
+                                $('.visa-table1 table').append(newRow1);
+                                $('.visa-table2 table').append(newRow2);
+                            }else{
+                                if(type == 'add1'){
+                                    $('.visa-table1 table').append(newRow1);
+                                }else{
+                                    $('.visa-table2 table').append(newRow2);
+                                }
+                            }
+                        }
+
+                        function addPicker(type){
+                            const counter = i;
+                            var dateFormat1 = "mm/dd/yy";
+                            function parseDate( element ) {
+                                var date;
+                                try {
+                                    date = $.datepicker.parseDate( dateFormat1, element.value );
+                                } catch( error ) {
+                                    date = null;
+                                }
+                                return date;
+                            }
+
+                            function addDate() {
+
+                                $( "#from"+counter )
+                                    .datepicker({
+                                        defaultDate: "+1w",
+                                        changeMonth: true,
+                                        numberOfMonths: 1
+                                    })
+                                    .on( "change", function() {
+                                        $( "#to"+counter ).datepicker( "option", "minDate", parseDate( this ) );
+                                    });
+                                $( "#to"+counter ).datepicker({
+                                    defaultDate: "+1w",
+                                    changeMonth: true,
+                                    numberOfMonths: 1
+                                }).on( "change", function() {
+                                    $('#from'+counter).datepicker( "option", "maxDate", parseDate( this ) );
+                                });
+                            }
+
+                            if(counter == 1){
+                                addDate();
+                                $("#picker"+counter).datepicker();
+                            }else{
+                                if(type == 'add1'){
+                                    addDate();
+                                }else{
+                                    $("#picker"+counter).datepicker();
+                                }
+                            }
+                        }
+
+                        function checkElement() {
+
+                            $('.visa-table1 table tr').each(function(i, item){
+                                $(item).find('.remove-button').on('click', function () {
+                                    $('.visa-table1 .row'+$(this).attr('data-id')).remove();
+                                });
+                            });
+
+                            $('.visa-table2 table tr').each(function(j,item){
+
+                                $(item).find('.submit-button').on('click', function () {
+
+                                    const way = Number($(this).attr('data-way'));
+
+                                    if(way == 1){
+                                        $(this).text('→ выезд');
+                                        $(item).find('.submit-button').attr('data-way', 2);
+                                    }else{
+                                        $(this).text('← въезд');
+                                        $(item).find('.submit-button').attr('data-way', 1);
+                                    }
+                                });
+                            });
+                        }
+                    });
+            </script>
+        </div>
+    </body>
+</html>
