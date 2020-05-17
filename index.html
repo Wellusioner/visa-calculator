@@ -203,6 +203,7 @@
                 }
                 .overall p{
                     margin-bottom: 10px;
+                    color: green;
                 }
 
             </style>
@@ -455,7 +456,8 @@
 
                         $('#calculate').on('click', function () {
                             const overall = $('.overall');
-                            var data = $('<div></div>');
+                            // var data = $('<div></div>');
+                            var data = 0;
 
                             const active = $('.visa-table.active').attr('data-id');
 
@@ -474,7 +476,8 @@
 
                                     if(from && to){
                                         $(interval).val(diff);
-                                        $(data).append('<p>Дата виїзду '+ to +' пізніше Передбачуваної дати в\'їзду / Контрольної дати '+ current +'</p>')
+                                        data += diff;
+                                        // $(data).append('<p>Дата виїзду '+ to +' пізніше Передбачуваної дати в\'їзду / Контрольної дати '+ current +'</p>')
                                     }
                                 });
                             }else{
@@ -482,11 +485,21 @@
                             }
 
                             $(overall).text('');
-                           if($(data).text()){
-                               $(overall).append(data);
-                               $(overall).append('<p>Розрахунок неможливий</p>');
+                            console.log(data);
+
+                            // var last_date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                            var future = new Date();
+
+                            if(data != 0){
+                                future = new Date(Date.now() + ( 90 - data ) * 24 * 60 * 60 * 1000);
+                            }
+                            var finalDate = future.getDate() + '/' + ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1)+ '/' + future.getFullYear() ;
+
+                           if(data){
+                               // $(overall).append(data);
+                               $(overall).append('<p>Допустимо пребывание на срок до '+ ( 90 - data) +' дней, до '+ finalDate +'</p>');
                            }else{
-                               $(overall).append('<p>Допустимо пребывание на срок до 90 дней, до 14/08/20</p>');
+                               $(overall).append('<p>Допустимо пребывание на срок до 90 дней, до '+ finalDate +'</p>');
                            }
                         });
                     });
