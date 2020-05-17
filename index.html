@@ -7,6 +7,10 @@
     <body>
         <div class="main-wrapper">
             <style>
+
+                body{
+                    background-color: #f7f7f7;
+                }
                 p{
                     margin: 0;
                 }
@@ -64,6 +68,7 @@
 
                 .visa-box{
                     padding: 30px;
+                    background-color: #fff;
                 }
                 .visa-tab{
                     display: flex;
@@ -193,6 +198,13 @@
                     color: #ffffff;
                 }
 
+                .overall{
+                    padding: 20px 0;
+                }
+                .overall p{
+                    margin-bottom: 10px;
+                }
+
             </style>
 
             <div class="main-div">
@@ -225,7 +237,7 @@
                                         <div data-id="2">Произвольно</div>
                                     </div>
                                     <div class="visa-content">
-                                        <div class="visa-table visa-table1" data-id="1">
+                                        <div class="visa-table visa-table1 active" data-id="1">
                                             <table>
                                                 <thead>
                                                 <tr>
@@ -251,9 +263,10 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="button submit-button" type="button">Рассчитать</button>
-                                        <button class="button" type="reset">Очистить</button>
+                                        <button id="calculate" class="button submit-button" type="button">Рассчитать</button>
+                                        <button id="clear" class="button" type="reset">Очистить</button>
                                     </div>
+                                    <div class="overall"></div>
                                 </div>
                                 <div class="passport-group d-col-6">
                                     <div class="subtitle blackish">Даты с загранпаспортов</div>
@@ -288,8 +301,8 @@
                             $('.visa-tab div').removeClass('active');
                             $(this).addClass('active');
 
-                            $('.visa-content .visa-table').fadeOut(0);
-                            $('.visa-content .visa-table[data-id='+ $(this).attr('data-id') +']').fadeIn(0);
+                            $('.visa-content .visa-table').removeClass('active').fadeOut(0);
+                            $('.visa-content .visa-table[data-id='+ $(this).attr('data-id') +']').fadeIn(0).addClass('active');
                         });
 
                         var i = 1;
@@ -314,14 +327,14 @@
 
                             const counter = i;
 
-                            const newRow1 = '<tr class="row'+counter+'">\n' +
+                            const newRow1 = '<tr class="table-row row'+counter+'">\n' +
                                 '                                                    <td>\n' +
                                 '                                                        <div class="input-wrapper has-img">\n' +
                                 '                                                            <label for="from'+counter+'">\n' +
                                 '                                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"\n' +
                                 '                                                                     alt="datepicker image">\n' +
                                 '                                                            </label>\n' +
-                                '                                                            <input class="default-input" id="from'+counter+'" type="text" readonly>\n' +
+                                '                                                            <input class="default-input has-datepicker from" id="from'+counter+'" type="text" readonly>\n' +
                                 '                                                        </div>\n' +
                                 '                                                    </td>\n' +
                                 '                                                    <td>\n' +
@@ -330,12 +343,12 @@
                                 '                                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABuUlEQVQ4jaXUT4iNYRTH8c/VdEspEsJiEmIWkiRlK8POygpLmg35U2qUhYWy0iRL3R0pmyk2s5iUjT9loYyaxaWpkQUys1Djz4ie2+9O0+2+udecOvV7z/s83/ec9znnqTUaDbFdeI3V+IMLuKO7ncdt1LCAvWiWlQO4i21YF9gp3MBlHK8A7sQMruE+HmC+xArwDJ7gYxYPoo7PeF8B3ICNWSt71xTWQAKl7ufYgbP4jlu4VwE8jetZ+xYXcQiH28BN+R+dJW6vAD7D0WXPtTC0gWPxFVsbeAmPVggr1Y21gZ9yADexvk/QV1wNYynDtp3Ez7TEAXzDNPblfenToZzoq7RbPcCWreryxXLiw5jC4+iX8eHEpqIbnZs7M5Qs9yeTLXiYZ8v02uihzs3dMiyjNIdF/Ij+FZ9LbDF6oRfgOEYym0+j38RHEmtGj/dS8jmcwO74wcyuHMRgZr7ozfj9rwzL1ycz7B+iv8QnE5uPbvZS8gRG0zovoqfjo4nNRE/0UvKVDP3W3HPHUlqxd7lp6tHlyiu9WgksDVqath/rCtyDIxmf1gj1aWVvYbSAs8lsaXz+25j9C1GSa8neIitNAAAAAElFTkSuQmCC"\n' +
                                 '                                                                     alt="datepicker image">\n' +
                                 '                                                            </label>\n' +
-                                '                                                            <input class="default-input" id="to'+counter+'" type="text" readonly>\n' +
+                                '                                                            <input class="default-input has-datepicker to" id="to'+counter+'" type="text" readonly>\n' +
                                 '                                                        </div>\n' +
                                 '                                                    </td>\n' +
                                 '                                                    <td>\n' +
                                 '                                                        <div class="input-wrapper">\n' +
-                                '                                                            <input id="result'+ counter +'" class="default-input absolute-input" type="text" readonly>\n' +
+                                '                                                            <input id="result'+ counter +'" class="interval default-input absolute-input" type="text" readonly>\n' +
                                 '                                                        </div>\n' +
                                 '                                                    </td>\n' +
                                 '                                                    <td><span data-id="' + counter + '" class="remove-button remove'+ counter +'">&times;</span></td>\n' +
@@ -435,6 +448,47 @@
                                 });
                             });
                         }
+
+                        $('#clear').on('click', function(){
+                            $('.overall').text('');
+                        });
+
+                        $('#calculate').on('click', function () {
+                            const overall = $('.overall');
+                            var data = $('<div></div>');
+
+                            const active = $('.visa-table.active').attr('data-id');
+
+                            if(active == 1){
+
+                                $('.visa-table.active table .table-row').each(function (i,row) {
+
+                                    const from = $(row).find('.from').val();
+                                    const to = $(row).find('.to').val();
+                                    const interval = $(row).find('.interval');
+                                    const current = $('#today').val();
+
+
+                                    const diff = (new Date(to) - new Date(from)) / 86400000;
+
+
+                                    if(from && to){
+                                        $(interval).val(diff);
+                                        $(data).append('<p>Дата виїзду '+ to +' пізніше Передбачуваної дати в\'їзду / Контрольної дати '+ current +'</p>')
+                                    }
+                                });
+                            }else{
+
+                            }
+
+                            $(overall).text('');
+                           if($(data).text()){
+                               $(overall).append(data);
+                               $(overall).append('<p>Розрахунок неможливий</p>');
+                           }else{
+                               $(overall).append('<p>Допустимо пребывание на срок до 90 дней, до 14/08/20</p>');
+                           }
+                        });
                     });
             </script>
         </div>
