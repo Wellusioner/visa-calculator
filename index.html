@@ -308,9 +308,14 @@
 
                         var i = 1;
 
-                        addRow();
-                        addPicker();
-                        checkElement();
+                        for(var j=0; j < 3; j++){
+                            addRow('add1');
+                            addRow('add2');
+                            addPicker('add1');
+                            addPicker('add2');
+                            checkElement();
+                            i++;
+                        }
 
                         $('.add1, .add2').on('click', function(){
 
@@ -368,16 +373,13 @@
                                 '                                                        <td><button data-way="1" type="button" class="button submit-button">← въезд</button></td>\n' +
                                 '                                                    </tr>';
 
-                            if( counter == 1){
+
+                            if(type == 'add1'){
                                 $('.visa-table1 table').append(newRow1);
-                                $('.visa-table2 table').append(newRow2);
                             }else{
-                                if(type == 'add1'){
-                                    $('.visa-table1 table').append(newRow1);
-                                }else{
-                                    $('.visa-table2 table').append(newRow2);
-                                }
+                                $('.visa-table2 table').append(newRow2);
                             }
+
                         }
 
                         function addPicker(type){
@@ -402,7 +404,9 @@
                                         numberOfMonths: 1
                                     })
                                     .on( "change", function() {
-                                        $( "#to"+counter ).datepicker( "option", "minDate", parseDate( this ) );
+                                        const render_date = $( "#to"+counter );
+                                        $(render_date).datepicker( "option", "minDate", parseDate( this ) );
+                                        $(render_date).datepicker( "option", "maxDate", parseDate( $('#today') ) );
                                     });
                                 $( "#to"+counter ).datepicker({
                                     defaultDate: "+1w",
@@ -413,15 +417,11 @@
                                 });
                             }
 
-                            if(counter == 1){
+
+                            if(type == 'add1'){
                                 addDate();
-                                $("#picker"+counter).datepicker();
                             }else{
-                                if(type == 'add1'){
-                                    addDate();
-                                }else{
-                                    $("#picker"+counter).datepicker();
-                                }
+                                $("#picker"+counter).datepicker();
                             }
                         }
 
